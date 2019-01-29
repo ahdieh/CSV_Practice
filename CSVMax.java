@@ -36,4 +36,30 @@ public class CSVMax {
         System.out.println("hottest temprature was " + largest.get("TemperatureF") + 
                             " at " + largest.get("TimeEST"));
     }
+    
+    public CSVRecord hottestInManyDays(){
+        CSVRecord largestSoFar = null;
+        DirectoryResource dr = new DirectoryResource();
+        //iterate over files
+        for (File f : dr.selectedFiles()){
+            FileResource fr = new FileResource(f);
+            // use meyhod to get the maximum in the file
+            CSVRecord currentRow = hottestHourInFile(fr.getCSVParser());
+            if (largestSoFar == null) largestSoFar = currentRow;
+            else{
+                double currentTemp = Double.parseDouble(currentRow.get("TemperatureF"));
+                double largestTemp = Double.parseDouble(largestSoFar.get("TemperatureF"));                // Check if currentRow's temperature > largestSoFar
+                // If so, update largestSoFar to currentRow
+                if (currentTemp > largestTemp) largestSoFar = currentRow;
+            }
+        }
+        // the largestSoFar is the answer
+        return largestSoFar;
+    }
+    // Maximum Temperature from Multiple Datasets
+    public void testHottestInManyDays(){
+        CSVRecord largest = hottestInManyDays();
+        System.out.println("hottest temprature was " + largest.get("TemperatureF") + 
+                            " at " + largest.get("DateUTC"));
+    }
 }
