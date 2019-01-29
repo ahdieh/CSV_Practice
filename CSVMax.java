@@ -16,15 +16,7 @@ public class CSVMax {
         CSVRecord largestSoFar = null;
         // For each row (currentRow) in the CSV file
         for (CSVRecord currentRow : parser){
-            // If largestSoFar is nothing
-            if (largestSoFar == null) largestSoFar = currentRow;
-            // Otherwise
-            else{
-                double currentTemp = Double.parseDouble(currentRow.get("TemperatureF"));
-                double largestTemp = Double.parseDouble(largestSoFar.get("TemperatureF"));                // Check if currentRow's temperature > largestSoFar
-                // If so, update largestSoFar to currentRow
-                if (currentTemp > largestTemp) largestSoFar = currentRow;
-                }
+           largestSoFar = getLargestOfTwo(currentRow, largestSoFar);
         }
         // the largestSoFar is the answer
         return largestSoFar;
@@ -45,16 +37,23 @@ public class CSVMax {
             FileResource fr = new FileResource(f);
             // use meyhod to get the maximum in the file
             CSVRecord currentRow = hottestHourInFile(fr.getCSVParser());
+            largestSoFar = getLargestOfTwo(currentRow, largestSoFar);
+        }
+        // the largestSoFar is the answer
+        return largestSoFar;
+    }
+    
+    public CSVRecord getLargestOfTwo(CSVRecord currentRow, CSVRecord largestSoFar){
+         // If largestSoFar is nothing
             if (largestSoFar == null) largestSoFar = currentRow;
+            // Otherwise
             else{
                 double currentTemp = Double.parseDouble(currentRow.get("TemperatureF"));
                 double largestTemp = Double.parseDouble(largestSoFar.get("TemperatureF"));                // Check if currentRow's temperature > largestSoFar
                 // If so, update largestSoFar to currentRow
                 if (currentTemp > largestTemp) largestSoFar = currentRow;
-            }
-        }
-        // the largestSoFar is the answer
-        return largestSoFar;
+                }
+                return largestSoFar;
     }
     // Maximum Temperature from Multiple Datasets
     public void testHottestInManyDays(){
