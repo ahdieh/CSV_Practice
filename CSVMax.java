@@ -7,6 +7,8 @@
  */
 
 import org.apache.commons.csv.*;
+import edu.duke.*;
+import java.io.*;
 
 public class CSVMax {
     public CSVRecord hottestHourInFile(CSVParser parser){
@@ -18,8 +20,8 @@ public class CSVMax {
             if (largestSoFar == null) largestSoFar = currentRow;
             // Otherwise
             else{
-                double currentTemp = Double.parseDouble(currentRow.get("Tempreture"));
-                double largestTemp = Double.parseDouble(largestSoFar.get("Tempreture"));                // Check if currentRow's temperature > largestSoFar
+                double currentTemp = Double.parseDouble(currentRow.get("TemperatureF"));
+                double largestTemp = Double.parseDouble(largestSoFar.get("TemperatureF"));                // Check if currentRow's temperature > largestSoFar
                 // If so, update largestSoFar to currentRow
                 if (currentTemp > largestTemp) largestSoFar = currentRow;
                 }
@@ -27,4 +29,5 @@ public class CSVMax {
         // the largestSoFar is the answer
         return largestSoFar;
     }
+    
 }
