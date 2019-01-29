@@ -10,7 +10,7 @@ import org.apache.commons.csv.*;
 import edu.duke.*;
 import java.io.*;
 
-public class CSVMax {
+public class CSVMaxAndMin {
     public CSVRecord hottestHourInFile(CSVParser parser){
         // start with largestSoFar as nothing
         CSVRecord largestSoFar = null;
@@ -60,5 +60,38 @@ public class CSVMax {
         CSVRecord largest = hottestInManyDays();
         System.out.println("hottest temprature was " + largest.get("TemperatureF") + 
                             " at " + largest.get("DateUTC"));
+    }
+    
+    
+    public CSVRecord coldestHourInFile(CSVParser parser){
+        // start with largestSoFar as nothing
+        CSVRecord coldestSoFar = null;
+        // For each row (currentRow) in the CSV file
+        for (CSVRecord currentRow : parser){
+           coldestSoFar = getColdestOfTwo(currentRow, coldestSoFar);
+        }
+        // the coldestSoFar is the answer
+        return coldestSoFar;
+    }
+    
+    public CSVRecord getColdestOfTwo(CSVRecord currentRow, CSVRecord coldestSoFar){
+         // If coldestSoFar is nothing
+            if (coldestSoFar == null) coldestSoFar = currentRow;
+            // Otherwise
+            else{
+                double currentTemp = Double.parseDouble(currentRow.get("TemperatureF"));
+                double coldestTemp = Double.parseDouble(coldestSoFar.get("TemperatureF"));                
+                // Check if currentRow's temperature > largestSoFar
+                // If so, update coldestSoFar to currentRow
+                if (currentTemp != -9999.00 && currentTemp < coldestTemp) coldestSoFar = currentRow;
+            }
+            return coldestSoFar;
+    }
+    
+    // Minimum Temperature in a single day
+    public void testColdestHourInFile(){
+        FileResource fr = new FileResource("data/2014/weather-2014-01-08.csv");
+        CSVRecord coldest = coldestHourInFile(fr.getCSVParser());
+        System.out.println("Coldest temprature was " + coldest.get("TemperatureF") + " at " + coldest.get("TimeEST"));
     }
 }
