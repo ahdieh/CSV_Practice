@@ -29,5 +29,11 @@ public class CSVMax {
         // the largestSoFar is the answer
         return largestSoFar;
     }
-    
+    // Maximum Temperature in a single day
+    public void testHottestDay(){
+        FileResource fr = new FileResource("data/2015/weather-2015-01-02.csv");
+        CSVRecord largest = hottestHourInFile(fr.getCSVParser());
+        System.out.println("hottest temprature was " + largest.get("TemperatureF") + 
+                            " at " + largest.get("TimeEST"));
+    }
 }
