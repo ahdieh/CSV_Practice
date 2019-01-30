@@ -8,10 +8,12 @@
 import org.apache.commons.csv.*;
 import edu.duke.*;
 import java.io.*;
+import java.text.SimpleDateFormat;  
+import java.util.Date; 
 
 public class CSVMin {
     public CSVRecord coldestHourInFile(CSVParser parser){
-        // start with largestSoFar as nothing
+        // start with coldestSoFar as nothing
         CSVRecord coldestSoFar = null;
         // For each row (currentRow) in the CSV file
         for (CSVRecord currentRow : parser){
@@ -28,7 +30,8 @@ public class CSVMin {
             else{
                 double currentTemp = Double.parseDouble(currentRow.get("TemperatureF"));
                 double coldestTemp = Double.parseDouble(coldestSoFar.get("TemperatureF"));                
-                // Check if currentRow's temperature > largestSoFar
+                // Check if currentRow's temperature > coldestSoFar
+                
                 // If so, update coldestSoFar to currentRow
                 if (currentTemp != -9999.00 && currentTemp < coldestTemp) coldestSoFar = currentRow;
             }
@@ -72,5 +75,39 @@ public class CSVMin {
         for (CSVRecord record : fr.getCSVParser()){
             System.out.println( record.get("DateUTC") + record.get("TemperatureF"));
         }
+    }
+    
+    public CSVRecord lowestHumidityInFile(CSVParser parser){
+        // start with lowestSoFar as nothing
+        CSVRecord lowestSoFar = null;
+        // For each row (currentRow) in the CSV file
+        for (CSVRecord currentRow : parser){
+           lowestSoFar = getLowestOfTwo(currentRow, lowestSoFar);
+        }
+        // the lowestSoFar is the answer
+        return lowestSoFar;
+    }
+    
+    public CSVRecord getLowestOfTwo(CSVRecord currentRow, CSVRecord lowestSoFar){
+         // If lowestSoFar is nothing
+            if (lowestSoFar == null) lowestSoFar = currentRow;
+            // Otherwise
+            else{
+                double currentTemp = Double.parseDouble(currentRow.get("Humidity"));
+                double lowestTemp = Double.parseDouble(lowestSoFar.get("Humidity"));                
+                // Check if currentRow's temperature > coldestSoFar
+                
+                // If so, update coldestSoFar to currentRow
+                if (currentTemp != -9999.00 && currentTemp < lowestTemp) lowestSoFar= currentRow;
+            }
+            return lowestSoFar;
+    }
+    
+    public void testLowestHumidityInFile (){
+        FileResource fr = new FileResource();
+        CSVParser parser = fr.getCSVParser();
+        CSVRecord csv = lowestHumidityInFile(parser);
+        System.out.println("Lowest Humidity was " + csv.get("Humidity") + " at " 
+                            + csv.get("DateUTC") + " " + csv.get("TimeEST"));
     }
 }
