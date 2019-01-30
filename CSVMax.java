@@ -10,7 +10,7 @@ import org.apache.commons.csv.*;
 import edu.duke.*;
 import java.io.*;
 
-public class CSVMaxAndMin {
+public class CSVMax {
     public CSVRecord hottestHourInFile(CSVParser parser){
         // start with largestSoFar as nothing
         CSVRecord largestSoFar = null;
