@@ -110,4 +110,22 @@ public class CSVMin {
         System.out.println("Lowest Humidity was " + csv.get("Humidity") + " at " 
                             + csv.get("DateUTC") + " " + csv.get("TimeEST"));
     }
+    
+    public CSVRecord lowestHumidityInManyFiles (){
+        DirectoryResource dr = new DirectoryResource();
+        CSVRecord lowestHumidityRecord = null;
+        CSVRecord currentLowestHumidityRecord = null;
+        for(File f : dr.selectedFiles()){
+            FileResource fr = new FileResource(f);
+            CSVParser parser = fr.getCSVParser();
+            currentLowestHumidityRecord = lowestHumidityInFile(parser);
+            lowestHumidityRecord = getLowestOfTwo(currentLowestHumidityRecord, lowestHumidityRecord);
+        }
+        return lowestHumidityRecord;
+    }
+    
+    public void testLowestHumidityInManyFiles(){
+        CSVRecord lowestHumidityRecord = lowestHumidityInManyFiles();
+        System.out.println("Lowest Humidity was " + lowestHumidityRecord.get("Humidity") + " at " + lowestHumidityRecord.get("DateUTC"));
+    }
 }
